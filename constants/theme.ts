@@ -1,53 +1,49 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
+// 使い方
+// import { useTheme } from 'react-native-paper';
 
-import { Platform } from 'react-native';
+// const MyComponent = () => {
+//   const theme = useTheme();
 
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
+//   return (
+//     <View style={{ backgroundColor: theme.colors.background }}>
+//       <Text style={{ color: theme.colors.text }}>現在のテーマに応じた色</Text>
+//     </View>
+//   );
+// };
 
-export const Colors = {
-  light: {
-    text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
-  },
-  dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
+import { MD3DarkTheme, MD3LightTheme } from "react-native-paper";
+
+export const lightTheme = {
+  ...MD3LightTheme,
+  colors: {
+    ...MD3LightTheme.colors,
+    background: "#ffffff",
+    onBackground: "#000000",
+    surface: "#ffffff",
+    onSurface: "#000000",
+    primary: "#6200ee",
+    onPrimary: "#ffffff",
+    secondary: "#03dac6",
+    onSecondary: "#000000",
+    error: "#b00020",
+    onError: "#ffffff",
   },
 };
 
-export const Fonts = Platform.select({
-  ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: 'ui-monospace',
+export const darkTheme = {
+  ...MD3DarkTheme,
+  dark: true,
+  colors: {
+    ...MD3DarkTheme.colors,
+    background: "#121212",
+    onBackground: "#ffffff",
+    surface: "#1f1f1f",
+    onSurface: "#ffffff",
+    primary: "#bb86fc",
+    onPrimary: "#000000",
+    secondary: "#03dac6",
+    onSecondary: "#000000",
+    error: "#cf6679",
+    onError: "#000000",
   },
-  default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
-  },
-  web: {
-    sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-    serif: "Georgia, 'Times New Roman', serif",
-    rounded: "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
-    mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
-  },
-});
+};
