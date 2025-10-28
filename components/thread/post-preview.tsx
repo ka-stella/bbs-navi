@@ -1,4 +1,4 @@
-import { formatDate } from "@/lib/utils";
+import { formatDate } from "@/lib/date";
 import { useSettingsStore } from "@/stores/use-setting-store";
 import { Post } from "@/types/post";
 import React from "react";

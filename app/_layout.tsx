@@ -1,7 +1,7 @@
 import { darkTheme, lightTheme } from "@/constants/theme";
 import { useSettingsStore } from "@/stores/use-setting-store";
 import * as NavigationBar from "expo-navigation-bar";
-import { Stack } from "expo-router";
+import { Slot } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { Platform } from "react-native";
@@ -29,9 +29,7 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <PaperProvider theme={isDarkMode ? darkTheme : lightTheme}>
         <StatusBar style={isDarkMode ? "light" : "dark"} />
-        <Stack>
-          <Stack.Screen name="(tab)" options={{ headerShown: false }} />
-        </Stack>
+        <Slot />
       </PaperProvider>
     </SafeAreaProvider>
   );

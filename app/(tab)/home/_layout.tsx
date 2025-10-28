@@ -4,9 +4,10 @@ import { Board } from "@/types/board";
 import { Href, Stack, usePathname, useRouter } from "expo-router";
 import { StyleSheet, View } from "react-native";
 import { useTheme } from "react-native-paper";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function HomeLayout() {
+  const insets = useSafeAreaInsets();
   const theme = useTheme();
   const styles = createStyles(theme);
 
@@ -29,7 +30,15 @@ export default function HomeLayout() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: theme.colors.background,
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+        paddingHorizontal: 16,
+      }}
+    >
       <BoardSelector
         boards={BOARDS}
         selectedBoard={selectedBoard}
@@ -44,7 +53,7 @@ export default function HomeLayout() {
           }}
         ></Stack>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
