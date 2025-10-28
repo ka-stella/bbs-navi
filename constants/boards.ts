@@ -3,13 +3,15 @@ import { Board } from "@/types/board";
 export const BOARDS: Board[] = [
   {
     id: "5ch",
-    name: "掲示板１",
+    name: "5ch",
     url: "https://www2.5ch.net/5ch.html",
+    path: "/(tab)/home/5ch",
   },
   {
     id: "bakusai",
-    name: "掲示板２",
+    name: "bakusai.com",
     url: "https://bakusai.com",
+    path: "/(tab)/home/bakusai",
   },
   // {
   //   id: "3",

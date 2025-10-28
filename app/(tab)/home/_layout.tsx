@@ -1,69 +1,25 @@
-import BoardSelector from "@/components/board-selector";
-import { BOARDS } from "@/constants/boards";
-import { Board } from "@/types/board";
-import { Href, Stack, usePathname, useRouter } from "expo-router";
-import { StyleSheet, View } from "react-native";
+import { getHeaderOptions } from "@/components/home/header/options";
+import { Stack, useSegments } from "expo-router";
 import { useTheme } from "react-native-paper";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function HomeLayout() {
-  const insets = useSafeAreaInsets();
+  // const insets = useSafeAreaInsets();
   const theme = useTheme();
-  const styles = createStyles(theme);
-
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const getCurrentBoardId = () => {
-    const match = pathname.match(/\/home\/([^\/]+)/);
-    return match ? match[1] : null;
-  };
-
-  const currentBoardId = getCurrentBoardId();
-
-  const selectedBoard =
-    (BOARDS.find((board) => board.id === currentBoardId) as Board) || null;
-
-  const handleBoardSelect = (board: Board) => {
-    const targetPath = `/(tab)/home/${board.id}`;
-    router.push(targetPath as Href);
-  };
+  const segments = useSegments();
+  const segment = segments.slice(2);
+  const location = segment.join("/");
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: theme.colors.background,
-        paddingTop: insets.top,
-        paddingBottom: insets.bottom,
-        paddingHorizontal: 16,
-      }}
-    >
-      <BoardSelector
-        boards={BOARDS}
-        selectedBoard={selectedBoard}
-        onBoardSelect={handleBoardSelect}
-      />
-
-      <View style={styles.content}>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-            animation: "fade",
-          }}
-        ></Stack>
-      </View>
-    </View>
+    <Stack
+      screenOptions={() => ({
+        ...getHeaderOptions(location),
+        headerStyle: {
+          backgroundColor: theme.colors.background,
+          borderBottomWidth: 1,
+          borderBottomColor: theme.colors.primary,
+        },
+        headerTintColor: theme.colors.onBackground,
+      })}
+    />
   );
 }
-
-const createStyles = (theme: any) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: theme.colors.surface,
-    },
-    content: {
-      flex: 1,
-    },
-  });

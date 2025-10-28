@@ -1,7 +1,7 @@
 import { LoadingIndicator } from "@/components/common/loading-indicator";
 import { useCategory } from "@/hooks/bakusai/use-category";
-import { Category } from "@/types/bakusai";
-import { useLocalSearchParams } from "expo-router";
+import { Category, SubCategory } from "@/types/bakusai";
+import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import {
   FlatList,
@@ -21,16 +21,14 @@ export default function BakusaiCategoryScreen(): React.JSX.Element {
 
   const { categories, isLoading } = useCategory(url);
 
-  const handleCategorySelected = (category: Category) => {
-    // router.push({
-    //   pathname: "/(tab)/home/bakusai/list",
-    //   params: {
-    //     areaId,
-    //     areaName,
-    //     categoryId: category.id,
-    //     categoryName: category.name,
-    //   },
-    // });
+  const handleCategorySelected = (subCategory: SubCategory) => {
+    router.push({
+      pathname: "/(tab)/home/bakusai/thread-list",
+      params: {
+        url: subCategory.url,
+        title: subCategory.name,
+      },
+    });
   };
 
   const toggleExpand = (categoryName: string) => {
@@ -47,11 +45,19 @@ export default function BakusaiCategoryScreen(): React.JSX.Element {
         <Text>{item.name}</Text>
       </TouchableOpacity>
 
+      {/* <Text key={idx}>・{sub.name}</Text> */}
       {/* サブカテゴリ（展開表示） */}
       {expandedCategory === item.name && (
         <View>
           {item.subCategories.map((sub, idx) => (
-            <Text key={idx}>・{sub.name}</Text>
+            <TouchableOpacity
+              onPress={() => handleCategorySelected(sub)}
+              key={idx}
+            >
+              <Text style={{ color: theme.colors.onSurface, fontSize: 18 }}>
+                {item.name}
+              </Text>
+            </TouchableOpacity>
           ))}
         </View>
       )}
