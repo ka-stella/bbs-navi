@@ -1,12 +1,11 @@
-import { BOARDS } from "@/constants/boards";
+import { getBoardUrl } from "@/constants/boards";
 import { extractCategoryFromHTML } from "@/features/bakusai/paser";
 import { loadHTMLFromAssets } from "@/lib/load-asset";
 import { Category } from "@/types/bakusai";
 import { useEffect, useState } from "react";
 import { Platform } from "react-native";
 
-const bakusaiBoard = BOARDS.find((board) => board.id === "bakusai");
-const BASE_URL = bakusaiBoard ? bakusaiBoard.url : "https://bakusai.com";
+const BASE_URL = getBoardUrl("bakusai");
 
 export const useCategory = (url: string) => {
   const [categories, setCategories] = useState<Category[]>();

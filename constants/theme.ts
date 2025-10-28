@@ -35,7 +35,7 @@ export const darkTheme = {
   dark: true,
   colors: {
     ...MD3DarkTheme.colors,
-    background: "#121212",
+    background: "#030303",
     onBackground: "#ffffff",
     surface: "#1f1f1f",
     onSurface: "#ffffff",

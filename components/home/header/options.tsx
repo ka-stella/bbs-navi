@@ -1,3 +1,4 @@
+import { AreaSelector } from "./bakusai/area-selector";
 import {
   BackButton,
   BoardSelectorButton,
@@ -6,39 +7,22 @@ import {
 } from "./buttons";
 
 export const getHeaderOptions = (location: string) => {
-  // 例: "bakusai/category" → ["bakusai", "category"]
-  const parts = location.split("/");
-  // const boardId = parts[0]; // "bakusai" or "5ch"
+  const parts = location.split("/"); // ["bakusai", "category"]
+  const boardId = parts[0]; // "bakusai" or "5ch"
   const isRoot = parts.length === 1 || parts[1] === "index";
+  const showAreaSelector = boardId === "bakusai";
 
-  // const board = BOARDS.find((b) => b.id === boardId);
-  // const boardTitle = board?.name ?? "";
-
-  if (isRoot) {
-    return {
-      headerLeft: () => null,
-      headerRight: () => (
-        <RightButtons>
-          <SearchButton />
-          <BoardSelectorButton />
-        </RightButtons>
-      ),
-      title: "",
-      // title: boardTitle,
-      // headerTitleAlign: "center",
-    };
-  }
+  const headerTitle = showAreaSelector ? () => <AreaSelector /> : "";
 
   return {
-    headerLeft: () => <BackButton />,
+    headerLeft: () => (isRoot ? null : <BackButton />),
     headerRight: () => (
       <RightButtons>
-        <SearchButton />
+        {isRoot ? null : <SearchButton />}
         <BoardSelectorButton />
       </RightButtons>
     ),
-    title: "",
-    // title: boardTitle,
-    // headerTitleAlign: "center",
+    headerTitle,
+    headerTitleAlign: "center" as const,
   };
 };

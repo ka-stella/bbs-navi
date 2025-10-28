@@ -11,7 +11,7 @@ export default function HomeLayout() {
 
   return (
     <Stack
-      screenOptions={() => ({
+      screenOptions={({ route, navigation }) => ({
         ...getHeaderOptions(location),
         headerStyle: {
           backgroundColor: theme.colors.background,
