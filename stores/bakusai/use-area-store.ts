@@ -1,5 +1,5 @@
 import { getBoardUrl } from "@/constants/boards";
-import { loadAreaHtml } from "@/features/bakusai/loadAreaHtml";
+import { loadAreaHtml } from "@/features/bakusai/load-area-html";
 import { extractAreaDataFromHTML } from "@/features/bakusai/paser";
 import { AreaData } from "@/types/bakusai";
 import AsyncStorage from "@react-native-async-storage/async-storage";

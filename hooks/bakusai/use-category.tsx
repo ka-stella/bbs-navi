@@ -1,9 +1,8 @@
 import { getBoardUrl } from "@/constants/boards";
+import { loadCategoryHtml } from "@/features/bakusai/load-category-html";
 import { extractCategoryFromHTML } from "@/features/bakusai/paser";
-import { loadHTMLFromAssets } from "@/lib/load-asset";
 import { Category } from "@/types/bakusai";
 import { useEffect, useState } from "react";
-import { Platform } from "react-native";
 
 const BASE_URL = getBoardUrl("bakusai");
 
@@ -20,18 +19,9 @@ export const useCategory = (url: string) => {
 
         if (!url) throw new Error("URLが指定されていません");
 
-        let htmlContent = "";
-        // TODO: 消す予定
-        if (Platform.OS === "web") {
-          htmlContent = await loadHTMLFromAssets("category.html");
-        } else {
-          const fullUrl = new URL(url, BASE_URL).toString();
-          const res = await fetch(fullUrl);
-          htmlContent = await res.text();
-        }
-
-        // HTMLを解析
-        const parsedCategories = extractCategoryFromHTML(htmlContent);
+        const fullUrl = new URL(url, BASE_URL).toString();
+        const html = await loadCategoryHtml(fullUrl);
+        const parsedCategories = extractCategoryFromHTML(html);
         setCategories(parsedCategories);
       } catch (err) {
         const errorMessage =
