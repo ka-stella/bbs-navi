@@ -21,6 +21,7 @@ export const useCategory = (url: string) => {
 
         const fullUrl = new URL(url, BASE_URL).toString();
         const html = await loadCategoryHtml(fullUrl);
+        console.log(fullUrl);
         const parsedCategories = extractCategoryFromHTML(html);
         setCategories(parsedCategories);
       } catch (err) {
