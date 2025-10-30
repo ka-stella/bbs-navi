@@ -12,6 +12,9 @@ export const isTextNode = (node: Node): node is Text => {
 
 /**
  * 特定のクラス名を持つ要素をすべて探す
+ * "ctg_box"	["ctg_box"]	-> true
+ * "ctg_box border_whole"	["ctg_box", "border_whole"] -> true
+ * "ctg_boxHeader"	["ctg_boxHeader"]	-> false
  */
 export const findAllElementsByClass = (
   root: Node | Node[],
@@ -22,23 +25,22 @@ export const findAllElementsByClass = (
 
   const search = (nodes: Node[]): void => {
     for (const node of nodes) {
-      // Documentノードなら子要素を処理
       if (node.type === "root" && (node as any).children) {
         search((node as any).children);
-      }
-      // Elementノードならチェック
-      else if (node.type === "tag") {
+      } else if (node.type === "tag") {
         const element = node as Element;
 
         // タグ名とクラス名が一致するかチェック
         if (element.name === tagName) {
           const classAttr = element.attribs?.class;
-          if (classAttr && classAttr === className) {
-            results.push(element);
+          if (classAttr) {
+            const classes = classAttr.trim().split(/\s+/);
+            if (classes.includes(className)) {
+              results.push(element);
+            }
           }
         }
 
-        // 子要素を探索
         if (element.children) {
           search(element.children);
         }

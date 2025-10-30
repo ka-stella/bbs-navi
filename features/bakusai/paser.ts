@@ -93,6 +93,8 @@ export const extractCategoryFromHTML = (html: string): Category[] => {
     (elm) => elm.attribs?.id !== "landscape_area_ctg",
   );
 
+  console.log(categoryWrappers.length);
+
   //各ラッパー要素からエリアデータを抽出
   categoryWrappers.forEach((categoryElm: Element) => {
     const category = extractCategoryFromWrapper(categoryElm);
@@ -143,9 +145,19 @@ const extractSubCategoryFromWrapper = (wrapper: Element): SubCategory[] => {
     for (const link of linkElements) {
       const url = link.attribs?.href || "";
 
-      // 子要素の <span class="ctg_menu_list_title"> を取得
+      // 通常は <span class="ctg_menu_list_title"> を探す
+      let name = "";
       const span = findElementByClass(link, "span", "ctg_menu_list_title");
-      const name = getTextContent(span)?.trim() || "";
+
+      if (span) {
+        name = getTextContent(span)?.trim() || "";
+      } else {
+        // <span>がない場合は <p class="ctg_menu_list_container"> のテキストを取得
+        const p = findElementByClass(link, "p", "ctg_menu_list_container");
+        if (p) {
+          name = getTextContent(p)?.trim() || "";
+        }
+      }
 
       if (name && url) {
         subCategories.push({ name, url });
