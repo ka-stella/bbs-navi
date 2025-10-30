@@ -1,20 +1,21 @@
-import { LoadingIndicator } from "@/components/common/loading-indicator";
-import { useAreaStore } from "@/stores/use-area-store";
+import { useAreaStore } from "@/stores/bakusai/use-area-store";
 import { AreaData } from "@/types/bakusai";
 import { router } from "expo-router";
-import { useState } from "react";
-import { TouchableOpacity } from "react-native";
-import { Modal, Portal, Text, useTheme } from "react-native-paper";
+import { useEffect, useState } from "react";
+import { FlatList, TouchableOpacity, View } from "react-native";
+import { IconButton, Modal, Portal, Text, useTheme } from "react-native-paper";
 
 export const AreaSelector = () => {
   const theme = useTheme();
   const [visible, setVisible] = useState(false);
-  const areas = useAreaStore((s) => s.areas);
-  const isLoading = useAreaStore((s) => s.isLoading);
-  const currentArea = useAreaStore((s) => s.currentArea);
-  const setCurrentArea = useAreaStore((s) => s.setCurrentArea);
+  const { areas, isLoading, currentArea, setCurrentArea, fetchAreas } =
+    useAreaStore();
 
   const label = currentArea?.name ?? (isLoading ? "読み込み中…" : "地域を選択");
+
+  useEffect(() => {
+    fetchAreas();
+  }, [fetchAreas]);
 
   const handleSelect = (area: AreaData) => {
     setCurrentArea?.(area);
@@ -71,64 +72,6 @@ const AreaSelectModal = ({
 }) => {
   const theme = useTheme();
 
-  if (isLoading) return <LoadingIndicator />;
-
-  // return (
-  //   <Portal>
-  //     <Modal visible={visible}>
-  //       <TouchableOpacity
-  //         style={{ flex: 1, backgroundColor: "#00000066" }}
-  //         activeOpacity={1}
-  //         onPress={onClose}
-  //       >
-  //         <Surface
-  //           style={{
-  //             marginTop: 120,
-  //             marginHorizontal: 20,
-  //             borderRadius: 12,
-  //             padding: 12,
-  //             maxHeight: "70%",
-  //             backgroundColor: theme.colors.surface,
-  //           }}
-  //         >
-  //           {isLoading ? (
-  //             <Text>読み込み中...</Text>
-  //           ) : (
-  //             <FlatList
-  //               data={areas ?? []}
-  //               keyExtractor={(item) => item.id}
-  //               ItemSeparatorComponent={() => <Divider />}
-  //               renderItem={({ item }) => {
-  //                 const active = currentArea?.id === item.id;
-  //                 return (
-  //                   <TouchableOpacity
-  //                     onPress={() => onSelect(item)}
-  //                     style={{
-  //                       paddingVertical: 12,
-  //                       paddingHorizontal: 8,
-  //                       flexDirection: "row",
-  //                       justifyContent: "space-between",
-  //                       alignItems: "center",
-  //                       backgroundColor: active
-  //                         ? theme.colors.surfaceVariant
-  //                         : undefined,
-  //                     }}
-  //                   >
-  //                     <Text style={{ color: theme.colors.onSurface }}>
-  //                       {item.name}
-  //                     </Text>
-  //                     {active ? <Text>✅</Text> : null}
-  //                   </TouchableOpacity>
-  //                 );
-  //               }}
-  //             />
-  //           )}
-  //         </Surface>
-  //       </TouchableOpacity>
-  //     </Modal>
-  //   </Portal>
-  // );
-
   return (
     <Portal>
       <Modal
@@ -138,14 +81,66 @@ const AreaSelectModal = ({
           backgroundColor: theme.dark
             ? "rgba(0, 0, 0, 0.2)"
             : "rgba(0, 0, 0, 0.5)",
+          padding: 20,
+          justifyContent: "center",
         }}
         contentContainerStyle={{
-          // backgroundColor: theme.colors.surface,
-          backgroundColor: "white",
+          backgroundColor: theme.colors.surface,
+          marginHorizontal: 24,
           padding: 20,
+          maxHeight: "70%",
+          borderRadius: 12,
         }}
       >
-        <Text>Example Modal. Click outside this area to dismiss.</Text>
+        {isLoading ? (
+          <Text>読み込み中...</Text>
+        ) : (
+          <FlatList
+            data={areas ?? []}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => {
+              const active = currentArea?.id === item.id;
+              return (
+                <TouchableOpacity
+                  onPress={() => onSelect(item)}
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    paddingVertical: 10,
+                    paddingHorizontal: 16,
+                    borderRadius: 8,
+                    marginBottom: 4,
+                    backgroundColor: active
+                      ? theme.colors.primaryContainer
+                      : "transparent",
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: active
+                        ? theme.colors.onPrimaryContainer
+                        : theme.colors.onSurface,
+                      fontSize: 16,
+                      fontWeight: active ? "600" : "400",
+                    }}
+                  >
+                    {item.name}
+                  </Text>
+                  <View style={{ width: 32, alignItems: "center" }}>
+                    <IconButton
+                      icon="check-circle"
+                      iconColor={active ? theme.colors.primary : "transparent"}
+                      size={22}
+                      style={{ margin: 0 }}
+                    />
+                  </View>
+                </TouchableOpacity>
+              );
+            }}
+            showsVerticalScrollIndicator={true}
+          />
+        )}
       </Modal>
     </Portal>
   );

@@ -15,7 +15,7 @@ export const LoadingIndicator: React.FC<LoadingIndicatorProps> = ({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        // padding: 20,
+        backgroundColor: theme.colors.background,
       }}
     >
       <ActivityIndicator size={size} color={theme.colors.onBackground} />

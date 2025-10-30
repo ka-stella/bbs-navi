@@ -6,9 +6,8 @@ export default function BakusaiCategoryScreen(): React.JSX.Element {
   const theme = useTheme();
   const params = useLocalSearchParams();
 
-  // 前の画面から渡されたパラメータを取得
   const url = params.url as string;
-  const title = params.title as string;
+  const title = params.name as string;
 
   return (
     <View style={{ flex: 1, backgroundColor: theme.colors.background }}>

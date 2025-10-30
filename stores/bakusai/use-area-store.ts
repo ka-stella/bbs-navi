@@ -5,7 +5,7 @@ import { AreaData } from "@/types/bakusai";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { create } from "zustand";
 
-const CACHE_KEY = "area_cache";
+const CACHE_KEY = "bakusai_area_cache";
 const CACHE_TTL = 1000 * 60 * 60; // 1h
 
 const url = getBoardUrl("bakusai");

@@ -48,7 +48,7 @@ export const BOARDS: Board[] = [
 const BOARD_MAP = new Map(BOARDS.map((board) => [board.id, board]));
 
 export const getBoardUrl = (
-  id: string,
+  id: "bakusai" | "5ch",
   defaultUrl: string = "https://bakusai.com",
 ): string => {
   return BOARD_MAP.get(id)?.url ?? defaultUrl;
